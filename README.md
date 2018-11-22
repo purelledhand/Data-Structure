@@ -2,7 +2,7 @@
 
 ### Binary Search Tree
 
-###Biconnected graph
+### Biconnected graph
 
 ### Kruskal algorithm
 
