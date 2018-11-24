@@ -65,9 +65,6 @@ int doesItMakeCycle(edge minCostEdge, int connectedSet[]) {
 
     //printf("[*] doesItMakeCycle\n");
     int src = minCostEdge.src; int dst = minCostEdge.dst;
-    int find_src=100;
-    int find_dst=100;
-    int parent;
 
     if(find(src, connectedSet)== find(dst, connectedSet)) {
         return 1;
