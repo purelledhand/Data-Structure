@@ -4,7 +4,6 @@
 int allEdges;
 int allVertexs;
 int *numberOfMST;
-*numberOfMST=0;
 
 typedef struct edge {
     int src;
@@ -12,6 +11,7 @@ typedef struct edge {
     int cost;
 } edge;
 
+//MinHeap insertion
 void insertMinEdgeHeap(edge edgeMinHeap[], edge newEdge, int *numberOfEdges) {
     int i = ++(*numberOfEdges);
 
@@ -24,10 +24,11 @@ void insertMinEdgeHeap(edge edgeMinHeap[], edge newEdge, int *numberOfEdges) {
     //printf("heap[%d] = %d\n", i, newEdge.cost);
 }
 
+//MinHeap deletion
 edge deleteMinEdgeHeap(edge edgeMinHeap[], int *numberOfEdges) {
     int parent, child;
     edge item, temp;
-    if(!(*numberOfEdges)) edgeMinHeap[0];
+    //if(!(*numberOfEdges)) return NULL;
     item = edgeMinHeap[1];
     temp = edgeMinHeap[(*numberOfEdges)--];
     parent=1; child=2;
@@ -44,6 +45,7 @@ edge deleteMinEdgeHeap(edge edgeMinHeap[], int *numberOfEdges) {
     return item;
 }
 
+// Find Set Operation
 int find(int i, int connectedSet[]) {
     int parent=100;
 
@@ -58,7 +60,8 @@ int find(int i, int connectedSet[]) {
     }
 }
 
-int doesItMakeCycle(edge minCostEdge, int connectedSet[], edge MST[]) {
+// Cycle Check
+int doesItMakeCycle(edge minCostEdge, int connectedSet[]) {
 
     //printf("[*] doesItMakeCycle\n");
     int src = minCostEdge.src; int dst = minCostEdge.dst;
@@ -66,34 +69,14 @@ int doesItMakeCycle(edge minCostEdge, int connectedSet[], edge MST[]) {
     int find_dst=100;
     int parent;
 
-    if(connectedSet[src]<0) {
-        find_src=src;
-    } else {
-        parent = connectedSet[src];
-        while(connectedSet[parent]>0) {
-            parent = connectedSet[parent];
-        }
-        find_src=parent;
-    }
-
-    if(connectedSet[dst]<0) {
-        find_dst=dst;
-    } else {
-        parent = connectedSet[dst];
-        while(connectedSet[parent]>0) {
-            parent = connectedSet[parent];
-        }
-        find_dst=parent;
-    }
-
-    //printf("find(%d)=%d, find(%d)=%d\n", src, find_src, dst, find_dst);
-    if(find_src == find_dst) {
+    if(find(src, connectedSet)== find(dst, connectedSet)) {
         return 1;
     }
     return 0;
 
 }
 
+// Add edge to MST by using union set operation
 void addEdge(edge selectedEdge, edge MST[], int connectedSet[]) {
     int i = find(selectedEdge.src, connectedSet);
     int j = find(selectedEdge.dst, connectedSet);
@@ -125,7 +108,10 @@ int main(){
     FILE *fp;
     char *out;
     numberOfEdges = (int *)calloc(10, sizeof(int));
+
     numberOfMST = (int *)calloc(100, sizeof(int));
+    *numberOfMST=0;
+
     out = (char *)calloc(500, sizeof(char));
     fp = fopen("sample.txt","r");
 
@@ -147,7 +133,7 @@ int main(){
     memset(connectedSet, -1, sizeof(connectedSet));
 
     while(*numberOfMST < (allVertexs-1)) {
-        if(doesItMakeCycle(edgeMinHeap[1], connectedSet, MST)) {
+        if(doesItMakeCycle(edgeMinHeap[1], connectedSet)) {
             deleteMinEdgeHeap(edgeMinHeap, numberOfEdges);
             continue;
         }
