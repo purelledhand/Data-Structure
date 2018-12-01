@@ -1,6 +1,6 @@
 all: kruskal_algorithm
 
-kruskal_algotithm: kruskal_algorithm.c
+kruskal_algorithm: kruskal_algorithm.c
 	gcc -o kruskal_algorithm kruskal_algorithm.c
 
 clean:
