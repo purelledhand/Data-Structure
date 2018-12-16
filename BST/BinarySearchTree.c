@@ -301,8 +301,8 @@ treePointer insert_node(treePointer root, element new_node) {
 
 void print_node(treePointer root) {
     if (!root) return;
-    printf("%s\n", root->data.name);
     print_node(root->leftChild);
+    printf("%s\n", root->data.name);
     print_node(root->rightChild);
 }
 
